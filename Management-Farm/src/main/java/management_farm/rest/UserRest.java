@@ -1,16 +1,13 @@
 package management_farm.rest;
 
-import management_farm.model.User;
-import management_farm.request.LoginRequest;
-import management_farm.response.LoginResponse;
+import management_farm.request.*;
+import management_farm.response.CustomerResponse;
+import management_farm.wrapper.UserMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Date: 11/24/2023
@@ -20,8 +17,25 @@ import java.util.Map;
 @RequestMapping("/users")
 public interface UserRest {
     @PostMapping("/login")
-    ResponseEntity<LoginResponse<String>> login(@RequestBody LoginRequest loginRequest);
+    ResponseEntity<CustomerResponse<String>> login(@RequestBody LoginRequest loginRequest);
 
+    @PostMapping("/signup")
+    ResponseEntity<CustomerResponse<String>> signup(@RequestBody SignupRequest signupRequest);
+
+    @PostMapping("/updateAvatar/{id}")
+    ResponseEntity<CustomerResponse<String>> updateAvatar(@RequestParam("file") MultipartFile file, @PathVariable("id") Long id);
     @GetMapping("/getAllUser")
-    ResponseEntity<LoginResponse<String>> getAllUser();
+    ResponseEntity<CustomerResponse<List<UserMapper>>> getAllUser();
+
+    @GetMapping("/getAvatar/{id}")
+    ResponseEntity<byte[]> getAvatarById(@PathVariable Long id);
+
+    @PostMapping("/updateStatus/{id}")
+    ResponseEntity<CustomerResponse<String>> updateStatusUser(@PathVariable Long id, @RequestBody UpdateStatusUserRequest status);
+
+    @PostMapping("/forgotPassword")
+    ResponseEntity<CustomerResponse<String>> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest);
+
+    @PostMapping("/resetPassword")
+    ResponseEntity<CustomerResponse<String>> resetPassword(@RequestParam String resetToken, @RequestBody ResetPasswordRequest resetPasswordRequest);
 }

@@ -30,6 +30,7 @@ public class Role {
     @Column(name = "name")
     private String roleName;
 
+    @Column(name = "status")
     private String status;
 
     @Column(name = "create_date")

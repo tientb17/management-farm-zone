@@ -49,9 +49,9 @@ public class EmailUtils {
         helper.setFrom("tien.manh.do99@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
-        String htmlMsg = "<p><b>Your Login details for Farm Zone System</b><br><b>Email: </b> " + to + " <br><b>" +
+        String htmlMsg = "<p><b>Your Login details for Farm System</b><br><b>Email: </b> " + to + " <br><b>" +
                 "User Login: </b>" + userLogin + "<br><b>Token: </b> " + token + "<br>" +
-                "<b style=" + "color:red" + ">Token Effective in 2 minute.</b><br><a href=\"http://localhost:4200/\">Click here to change password</a></p>";
+                "<b style=" + "color:red" + ">Token Effective in 2 minute.</b><br><a href=\"http://localhost:4200/" + token + "\">Click here to change password</a></p>";
         message.setContent(htmlMsg, "text/html");
         emailSender.send(message);
     }

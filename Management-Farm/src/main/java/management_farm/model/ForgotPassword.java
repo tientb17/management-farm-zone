@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -13,6 +14,10 @@ import java.util.Date;
  * Author: ManhTien
  */
 
+@NamedQuery(name = "ForgotPassword.findByUserId",
+query = "select f from ForgotPassword f where f.userId.id =: userId")
+@NamedQuery(name = "ForgotPassword.findByResetToken",
+query = "select f from ForgotPassword f where f.resetToken =:resetToken")
 @Data
 @Entity
 @DynamicUpdate
@@ -36,4 +41,7 @@ public class ForgotPassword {
 
     @Column(name = "last_date_reset")
     private Date lastDateReset;
+
+    @Column(name = "expire_date")
+    private LocalDateTime expireDate;
 }
