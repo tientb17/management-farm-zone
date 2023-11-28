@@ -28,8 +28,18 @@ public class ManagementFarmApplication {
 
     @Bean
     InitializingBean createDataRoleDefault() {
-        Role roleExisted = roleDao.findByRoleName("admin");
-        if (Objects.isNull(roleExisted)) {
+        Role roleAdminExisted = roleDao.findByRoleName("admin");
+        Role roleUserExisted = roleDao.findByRoleName("user");
+        if(Objects.isNull(roleUserExisted)) {
+            Role initRole = new Role();
+            initRole.setRoleName("user");
+            initRole.setCreateDate(new Date());
+            initRole.setStatus("true");
+            return () -> {
+                roleDao.save(initRole);
+            };
+        }
+        if (Objects.isNull(roleAdminExisted)) {
             Role initRole = new Role();
             initRole.setRoleName("admin");
             initRole.setCreateDate(new Date());

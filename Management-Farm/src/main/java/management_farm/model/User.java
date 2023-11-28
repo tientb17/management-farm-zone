@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.Date;
 
 /**
@@ -17,6 +16,18 @@ import java.util.Date;
 
 @NamedQuery(name = "User.findUserByUserLogin",
         query = "select u from User u where u.userLogin =:user_login")
+@NamedQuery(name = "User.updateAvatar",
+        query = "update User u set u.avatar =:avatar, u.updateDate =:updateDate, u.updatedBy =:updatedBy where u.id =:id")
+@NamedQuery(name = "User.getAllUser",
+        query = "select new management_farm.wrapper.UserMapper(u.id, u.address, u.birthDate, u.createDate, u.email, u.fullName, u.phone, u.status, u.userLogin, u.updateDate, u.updatedBy, r.roleName) from User u inner join Role r on u.roleId.id = r.id where u.userLogin != 'admin'")
+@NamedQuery(name = "User.updateStatus",
+        query = "update User u set u.status =:status, u.updateDate=:updateDate, u.updatedBy=:updatedBy where u.id =:id")
+@NamedQuery(name = "User.findByUserLoginAndEmail",
+        query = "select u from User u where u.userLogin =:userLogin and u.email =:email")
+@NamedQuery(name = "User.resetPassword",
+        query = "update User u set u.password =:newPassword, u.updateDate =:updateDate where u.id =:id")
+@NamedQuery(name = "User.getAllUserAdminRole",
+        query = "select u.email from User u where u.roleId.roleName = 'admin'")
 @Data
 @Entity
 @DynamicUpdate
@@ -58,6 +69,9 @@ public class User {
 
     @Column(name = "create_date")
     private Date createDate;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @Column(name = "update_date")
     private Date updateDate;
